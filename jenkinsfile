@@ -17,7 +17,7 @@ pipeline {
       steps {
         container('terraform') {
           sh 'terraform init'
-          sh 'terraform plan -out myplan -var="project_id=cr-lab-hraizada-2906225331"'
+          sh 'terraform plan -out myplan'
         }
       }      
     }

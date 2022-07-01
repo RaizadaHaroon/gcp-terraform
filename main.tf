@@ -1,5 +1,6 @@
 provider "google" {
-  project     = var.project_id
+  credentials = "${file("./creds/serviceaccount.json")}"
+  project     = "cr-lab-hraizada-2906225331"
   region      = var.region
   
 }
