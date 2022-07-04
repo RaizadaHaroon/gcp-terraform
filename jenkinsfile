@@ -21,7 +21,7 @@ pipeline {
       steps {
         
           sh '/opt/homebrew/bin/terraform init -reconfigure'
-          sh '/opt/homebrew/bin/terraform plan'
+          sh '/opt/homebrew/bin/terraform plan -var="project_id=cr-lab-hraizada-2906225331"'
         }
           
     }
