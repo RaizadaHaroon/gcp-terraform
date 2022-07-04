@@ -17,19 +17,12 @@ pipeline {
       }
     }
 
-    stage('TF Plan') {
-      steps {
-        
-          sh '/opt/homebrew/bin/terraform init -reconfigure'
-          sh '/opt/homebrew/bin/terraform plan -var="project_id=cr-lab-hraizada-2906225331"'
-        }
-          
-    }
+   
  stage('TF Apply') {
       steps {
         
          
-          sh '/opt/homebrew/bin/terraform apply --auto-approve -var="project_id=cr-lab-hraizada-2906225331"'
+          sh '/opt/homebrew/bin/terraform destroy --auto-approve -var="project_id=cr-lab-hraizada-2906225331"'
         }
           
     }
