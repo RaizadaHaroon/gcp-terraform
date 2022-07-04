@@ -20,7 +20,7 @@ pipeline {
     stage('TF Plan') {
       steps {
         
-          sh '/opt/homebrew/bin/terraform init'
+          sh '/opt/homebrew/bin/terraform init -reconfigure'
           sh '/opt/homebrew/bin/terraform plan'
         }
           
