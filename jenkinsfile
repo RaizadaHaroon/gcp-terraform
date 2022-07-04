@@ -19,10 +19,10 @@ pipeline {
 
     stage('TF Plan') {
       steps {
-        container('terraform') {
-          sh 'terraform init'
-          sh 'terraform plan -out myplan'
-        }
+        
+         terraform init
+         terraform plan -out myplan
+        
       }      
     }
 
@@ -36,9 +36,9 @@ pipeline {
 
     stage('TF Apply') {
       steps {
-        container('terraform') {
-          sh 'terraform apply -input=false myplan -var="project_id=cr-lab-hraizada-2906225331"'
-        }
+     
+     terraform apply -input=false myplan -var="project_id=cr-lab-hraizada-2906225331"
+        
       }
     }
 
