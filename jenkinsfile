@@ -1,12 +1,6 @@
 pipeline {
 
-  agent {
-    docker {
-      image 'hashicorp/terraform:light'
-      args '--entrypoint='
-    }
-  }
-
+  agent any
 
  environment {
     SVC_ACCOUNT_KEY = credentials('terraform-auth')
@@ -22,28 +16,15 @@ pipeline {
       }
     }
 
-    stage('TF Plan') {
+    stage('Terraform Init') {
       steps {
-        
-        sh 'terraform init'
-        sh  'terraform plan -out myplan'
-        
-      }      
-    }
-
-    stage('Approval') {
-      steps {
-        script {
-          def userInput = input(id: 'confirm', message: 'Apply Terraform?', parameters: [ [$class: 'BooleanParameterDefinition', defaultValue: false, description: 'Apply terraform', name: 'confirm'] ])
-        }
+        sh label: '', script: 'terraform init'
       }
     }
-
-    stage('TF Apply') {
+    
+    stage('Terraform apply') {
       steps {
-     
-     sh 'terraform apply --auto-approve' 
-        
+        sh label: '', script: 'terraform apply --auto-approve'
       }
     }
 
