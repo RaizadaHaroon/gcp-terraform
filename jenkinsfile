@@ -20,8 +20,8 @@ pipeline {
     stage('TF Plan') {
       steps {
         
-         terraform init
-         terraform plan -out myplan
+        'sh terraform init'
+        'sh terraform plan -out myplan'
         
       }      
     }
@@ -37,7 +37,7 @@ pipeline {
     stage('TF Apply') {
       steps {
      
-     terraform apply --auto-approve 
+     'sh terraform apply --auto-approve' 
         
       }
     }
