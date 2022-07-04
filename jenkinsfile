@@ -1,6 +1,12 @@
 pipeline {
 
-  agent any
+  agent {
+    docker {
+      image 'hashicorp/terraform:light'
+      args '--entrypoint='
+    }
+  }
+
 
  environment {
     SVC_ACCOUNT_KEY = credentials('terraform-auth')
