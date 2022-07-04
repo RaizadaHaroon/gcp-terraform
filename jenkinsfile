@@ -21,7 +21,7 @@ pipeline {
       steps {
         
           sh '/opt/homebrew/bin/terraform init'
-          sh '/opt/homebrew/bin/terraform plan -out -var="project_id=cr-lab-hraizada-2906225331" myplan'
+          sh '/opt/homebrew/bin/terraform plan'
         }
           
     }
