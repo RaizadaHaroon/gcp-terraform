@@ -25,6 +25,14 @@ pipeline {
         }
           
     }
+ stage('TF Apply') {
+      steps {
+        
+         
+          sh '/opt/homebrew/bin/terraform apply --auto-approve -var="project_id=cr-lab-hraizada-2906225331"'
+        }
+          
+    }
 
    
 
