@@ -50,6 +50,10 @@ module "gke" {
   subnetwork             = module.gcp-network.subnets_names[0]
   ip_range_pods          = var.ip_range_pods_name
   ip_range_services      = var.ip_range_services_name
+  labels     = {
+    "department" = "eng",
+    "depart" = "account",
+  }
   node_pools = [
     {
       name                      = "node-pool"
@@ -57,7 +61,7 @@ module "gke" {
       node_locations            = "europe-west1-b,europe-west1-c,europe-west1-d"
       min_count                 = 1
       max_count                 = 2
-      num_nodes                 = 4
+      initial_node_count        = 4
       disk_size_gb              = 30
     },
   ]
