@@ -63,10 +63,10 @@ module "gke" {
     },
   ]
 node_pools_labels = {
-    all = {}
+    all = {env:"test"}
 
     default-node-pool = {
-      "app.role" = "web"
+      default-node-pool = true
     }
   }
 }
