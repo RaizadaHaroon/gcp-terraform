@@ -22,7 +22,8 @@ pipeline {
       steps {
         
          
-          sh '/opt/homebrew/bin/terraform state push errored.tfstate'
+          sh '/opt/homebrew/bin/terraform init --reconfigure'
+	  sh '/opt/homebrew/bin/terraform apply --auto-approve -var="project_id=cr-lab-hraizada-2906225331"'
         }
           
     }
