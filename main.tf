@@ -63,10 +63,10 @@ module "gke" {
     },
   ]
 node_pools_labels = {
-    all = {env:"test"}
-
-    default-node-pool = {
-      default-node-pool = true
+    all = {
+      env = "test"
     }
+    default     = {}
+    preemptible = {}
   }
 }
