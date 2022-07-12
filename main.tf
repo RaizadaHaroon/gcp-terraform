@@ -1,9 +1,7 @@
 provider "google" {
-  credentials = ${{"secrets.GOOGLE_CREDENTIALS"}}
   project     = "cr-lab-hraizada-2906225331"
   region      = var.region
-  
-}
+  }
 module "gke_auth" {
   source = "terraform-google-modules/kubernetes-engine/google//modules/auth"
   depends_on   = [module.gke]
