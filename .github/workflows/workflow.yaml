@@ -58,6 +58,7 @@ jobs:
   build-push:
       name: Build, Push and deploy app to gke
       runs-on: ubuntu-latest
+      needs: terraform
       defaults:
        run:
         shell: bash
