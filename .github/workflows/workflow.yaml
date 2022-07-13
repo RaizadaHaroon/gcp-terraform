@@ -11,7 +11,7 @@ env:
   GKE_ZONE: europe-west1      # Add your cluster zone here.
   DEPLOYMENT_NAME: hello-app  # Add your deployment name here.
   IMAGE: top
-  CREDS: ${{secrets.GOOGLE_CREDENTIALS}}
+  CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
 jobs:
   job1:
