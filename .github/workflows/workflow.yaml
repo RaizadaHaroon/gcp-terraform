@@ -107,6 +107,8 @@ jobs:
        - name: Update deploy image
          working-directory: ./
          run: |-
-          kubectl create deployment --image="gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}" ${DEPLOYMENT_NAME}
-          kubectl expose deployment ${DEPLOYMENT_NAME} --port=8080 --target-port=8080 --name=example-service --type=LoadBalancer
+          kubectl create deployment --image="gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}" ${DEPLOYMENT_NAME} --dry-run -o yaml>depl.yaml
+          kubectl apply -f depl.yaml
+          kubectl expose deployment ${DEPLOYMENT_NAME} --port=8080 --target-port=8080 --name=example-service --type=LoadBalancer --dry-run -o yaml>service.yaml
+          kubectl apply -f service.yaml
           kubectl get services -o wide
