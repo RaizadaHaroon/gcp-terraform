@@ -56,22 +56,10 @@ module "gke" {
       node_locations  = "europe-west1-b,europe-west1-c,europe-west1-d"
       min_count       = 1
       max_count       = 2
+      num_count       = 3
       disk_size_gb    = 30
       service_account = "terraform-account@cr-lab-hraizada-2906225331.iam.gserviceaccount.com"
     },
   ]
-  node_pools_labels = {
-    all = {
-      env = "test"
-    }
-    default     = {}
-    preemptible = {}
-  }
-  node_pools_oauth_scopes = {
-    all = []
 
-    default-node-pool = [
-      "https://www.googleapis.com/auth/cloud-platform",
-    ]
-  }
 }
