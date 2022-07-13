@@ -1,0 +1,88 @@
+name: Create and Deploy Terraform template.
+
+on:
+  workflow_call:
+    inputs:
+      project_id:
+        required: true
+        type: string
+      image:
+        required: true
+        type: string
+      deploymentName:
+        required: true
+        type: string
+      GKE_CLUSTER:
+        required: true
+        type: string
+      GKE_ZONE:
+        required: true
+        type: string
+      
+      
+    secrets:
+      token:
+        required: true
+      
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+
+    name: Build, Push and deploy app to gke
+      #runs-on: ubuntu-latest
+    needs: build
+    defaults:
+       run:
+        shell: bash
+
+    steps:
+       - name: Checkout
+         uses: actions/checkout@v3
+
+       - name: 'Set up Cloud SDK'
+         uses: 'google-github-actions/setup-gcloud@v0'
+         with:
+          service_account_key: ${{ secrets.token }}
+          project_id: ${{ inputs.project_id }}
+
+      # Configure Docker to use the gcloud command-line tool as a credential
+      # helper for authentication
+       - run: |-
+          gcloud --quiet auth configure-docker
+
+      # Get the GKE credentials so we can deploy to the cluster
+       - uses: 'google-github-actions/get-gke-credentials@v0'
+         with:
+           cluster_name: ${{ inputs.GKE_CLUSTER }}
+           location: ${{ inputs.GKE_ZONE }}
+           credentials: ${{ secrets.token }}
+
+       - name: Declare docker tag variables
+         id: vars
+         shell: bash
+         run: |
+          GIT_HASH=$(git rev-parse --short "${GITHUB_SHA}")
+          echo "##[set-output name=docker_tag;]$(echo ${GITHUB_REF##*/}-${GIT_HASH})"
+
+      # Build the Docker image
+       - name: Build
+         run: |-
+          docker build \
+            --tag "gcr.io/${{inputs.project_id}}/${{inputs.image}}:${{ steps.vars.outputs.docker_tag }}" .
+
+      # Push the Docker image to Google Container Registry
+       - name: Publish
+         run: |-
+          docker push "gcr.io/${{inputs.project_id}}/${{inputs.image}}:${{ steps.vars.outputs.docker_tag }}"
+
+      
+
+       - name: Update deploy image
+         working-directory: ./
+         run: |-
+          kubectl create deployment --image="gcr.io/${{inputs.project_id}}/${{inputs.image}}:${{ steps.vars.outputs.docker_tag }}" ${{inputs.deploymentName}} --dry-run -o yaml>depl.yaml
+          kubectl apply -f depl.yaml
+          kubectl expose deployment ${{inputs.deploymentName}} --port=8080 --target-port=8080 --name=example-service --type=LoadBalancer --dry-run -o yaml>service.yaml
+          kubectl apply -f service.yaml
+          kubectl get services -o wide

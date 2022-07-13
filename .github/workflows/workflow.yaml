@@ -15,9 +15,21 @@ env:
 
 jobs:
   job1:
-   uses: ./.github/workflows/reuseableDestroy.yaml
+   uses: ./.github/workflows/reuseable.yaml
    with:
       project_id: $PROJECT_ID
+   secrets:
+      token: ${{ secrets.GOOGLE_CREDENTIALS }}
+  job2:
+   needs: job1
+   uses: ./.github/workflows/reuseableApp.yaml
+   with:
+      project_id: $PROJECT_ID
+      image: $IMAGE
+      deploymentName: $DEPLOYMENT_NAME
+      GKE_CLUSTER: $GKE_CLUSTER
+      GKE_ZONE: $GKE_ZONE
+       
    secrets:
       token: ${{ secrets.GOOGLE_CREDENTIALS }}
      # GOOGLE_CREDENTIALS: $GITHUB_RUN_NUMBER
