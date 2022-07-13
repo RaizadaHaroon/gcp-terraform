@@ -17,6 +17,7 @@ jobs:
    uses: ./.github/workflows/reuseable.yaml
    with:
       project_id: $PROJECT_ID
+      GOOGLE_CREDENTIALS: ${{secrets.GOOGLE_CREDENTIALS}}
      # GOOGLE_CREDENTIALS: $GITHUB_RUN_NUMBER
   #   name: 'Terraform'
   #   runs-on: ubuntu-latest
