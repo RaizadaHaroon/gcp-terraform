@@ -15,7 +15,7 @@ env:
 
 jobs:
   job1:
-   uses: ./.github/workflows/reuseable.yaml
+   uses: ./.github/workflows/reuseableDestroy.yaml
    with:
       project_id: $PROJECT_ID
    secrets:
