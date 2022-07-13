@@ -13,103 +13,107 @@ env:
   IMAGE: top
 
 jobs:
-  terraform:
-    name: 'Terraform'
-    runs-on: ubuntu-latest
+  job1:
+   uses: RaizadaHaroon/gcp-terraform/.github/workflows/actions/reuseable.yml@main
+   with:
+      project_id: $PROJECT_ID
+     # GOOGLE_CREDENTIALS: $GITHUB_RUN_NUMBER
+  #   name: 'Terraform'
+  #   runs-on: ubuntu-latest
 
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
-    defaults:
-      run:
-        shell: bash
+  #   # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+  #   defaults:
+  #     run:
+  #       shell: bash
 
-    steps:
-    # Checkout the repository to the GitHub Actions runner
-    - name: Checkout
-      uses: actions/checkout@v2
+  #   steps:
+  #   # Checkout the repository to the GitHub Actions runner
+  #   - name: Checkout
+  #     uses: actions/checkout@v2
 
-    # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v1
+  #   # Install the latest version of Terraform CLI and configure the Terraform CLI configuration file with a Terraform Cloud user API token
+  #   - name: Setup Terraform
+  #     uses: hashicorp/setup-terraform@v1
 
 
-    # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
-    - name: Terraform Init
-      run: terraform init
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+  #   # Initialize a new or existing Terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+  #   - name: Terraform Init
+  #     run: terraform init
+  #     env:
+  #       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-    # Checks that all Terraform configuration files adhere to a canonical format
-    - name: Terraform Format
-      run: terraform fmt -check
+  #   # Checks that all Terraform configuration files adhere to a canonical format
+  #   - name: Terraform Format
+  #     run: terraform fmt -check
 
-    # Generates an execution plan for Terraform
-    - name: Terraform Plan
-      run: terraform plan -var="project_id=cr-lab-hraizada-2906225331"
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+  #   # Generates an execution plan for Terraform
+  #   - name: Terraform Plan
+  #     run: terraform plan -var="project_id=cr-lab-hraizada-2906225331"
+  #     env:
+  #       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-      # On push to main, build or change infrastructure according to Terraform configuration files
-      # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
-    - name: Terraform Apply
-      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -auto-approve -var="project_id=cr-lab-hraizada-2906225331"
-      env:
-        GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
-  build-push:
-      name: Build, Push and deploy app to gke
-      runs-on: ubuntu-latest
-      needs: terraform
-      defaults:
-       run:
-        shell: bash
+  #     # On push to main, build or change infrastructure according to Terraform configuration files
+  #     # Note: It is recommended to set up a required "strict" status check in your repository for "Terraform Cloud". See the documentation on "strict" required status checks for more information: https://help.github.com/en/github/administering-a-repository/types-of-required-status-checks
+  #   - name: Terraform Apply
+  #     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+  #     run: terraform apply -auto-approve -var="project_id=cr-lab-hraizada-2906225331"
+  #     env:
+  #       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
+  # build-push:
+  #     name: Build, Push and deploy app to gke
+  #     runs-on: ubuntu-latest
+  #     needs: terraform
+  #     defaults:
+  #      run:
+  #       shell: bash
 
-      steps:
-       - name: Checkout
-         uses: actions/checkout@v3
+  #     steps:
+  #      - name: Checkout
+  #        uses: actions/checkout@v3
 
-       - name: 'Set up Cloud SDK'
-         uses: 'google-github-actions/setup-gcloud@v0'
-         with:
-          service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
-          project_id: ${{ secrets.GKE_PROJECT }}
+  #      - name: 'Set up Cloud SDK'
+  #        uses: 'google-github-actions/setup-gcloud@v0'
+  #        with:
+  #         service_account_key: ${{ secrets.GOOGLE_CREDENTIALS }}
+  #         project_id: ${{ secrets.GKE_PROJECT }}
 
-      # Configure Docker to use the gcloud command-line tool as a credential
-      # helper for authentication
-       - run: |-
-          gcloud --quiet auth configure-docker
+  #     # Configure Docker to use the gcloud command-line tool as a credential
+  #     # helper for authentication
+  #      - run: |-
+  #         gcloud --quiet auth configure-docker
 
-      # Get the GKE credentials so we can deploy to the cluster
-       - uses: 'google-github-actions/get-gke-credentials@v0'
-         with:
-           cluster_name: ${{ env.GKE_CLUSTER }}
-           location: ${{ env.GKE_ZONE }}
-           credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
+  #     # Get the GKE credentials so we can deploy to the cluster
+  #      - uses: 'google-github-actions/get-gke-credentials@v0'
+  #        with:
+  #          cluster_name: ${{ env.GKE_CLUSTER }}
+  #          location: ${{ env.GKE_ZONE }}
+  #          credentials: ${{ secrets.GOOGLE_CREDENTIALS }}
 
-       - name: Declare docker tag variables
-         id: vars
-         shell: bash
-         run: |
-          GIT_HASH=$(git rev-parse --short "${GITHUB_SHA}")
-          echo "##[set-output name=docker_tag;]$(echo ${GITHUB_REF##*/}-${GIT_HASH})"
+  #      - name: Declare docker tag variables
+  #        id: vars
+  #        shell: bash
+  #        run: |
+  #         GIT_HASH=$(git rev-parse --short "${GITHUB_SHA}")
+  #         echo "##[set-output name=docker_tag;]$(echo ${GITHUB_REF##*/}-${GIT_HASH})"
 
-      # Build the Docker image
-       - name: Build
-         run: |-
-          docker build \
-            --tag "gcr.io/${PROJECT_ID}/$IMAGE:${{ steps.vars.outputs.docker_tag }}" .
+  #     # Build the Docker image
+  #      - name: Build
+  #        run: |-
+  #         docker build \
+  #           --tag "gcr.io/${PROJECT_ID}/$IMAGE:${{ steps.vars.outputs.docker_tag }}" .
 
-      # Push the Docker image to Google Container Registry
-       - name: Publish
-         run: |-
-          docker push "gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}"
+  #     # Push the Docker image to Google Container Registry
+  #      - name: Publish
+  #        run: |-
+  #         docker push "gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}"
 
       
 
-       - name: Update deploy image
-         working-directory: ./
-         run: |-
-          kubectl create deployment --image="gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}" ${DEPLOYMENT_NAME} --dry-run -o yaml>depl.yaml
-          kubectl apply -f depl.yaml
-          kubectl expose deployment ${DEPLOYMENT_NAME} --port=8080 --target-port=8080 --name=example-service --type=LoadBalancer --dry-run -o yaml>service.yaml
-          kubectl apply -f service.yaml
-          kubectl get services -o wide
+  #      - name: Update deploy image
+  #        working-directory: ./
+  #        run: |-
+  #         kubectl create deployment --image="gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}" ${DEPLOYMENT_NAME} --dry-run -o yaml>depl.yaml
+  #         kubectl apply -f depl.yaml
+  #         kubectl expose deployment ${DEPLOYMENT_NAME} --port=8080 --target-port=8080 --name=example-service --type=LoadBalancer --dry-run -o yaml>service.yaml
+  #         kubectl apply -f service.yaml
+  #         kubectl get services -o wide
