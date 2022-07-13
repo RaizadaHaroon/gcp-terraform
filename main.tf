@@ -1,6 +1,6 @@
 provider "google" {
-  project     = "cr-lab-hraizada-2906225331"
-  region      = var.region
+  project = "cr-lab-hraizada-2906225331"
+  region  = var.region
 
 }
 module "gke_auth" {
