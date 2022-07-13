@@ -108,7 +108,7 @@ jobs:
           kustomize-version: 4.5.4
 
        - name: Update deploy image
-         working-directory: deploy
+         working-directory: ./
          run: |-
           kustomize edit set image "gcr.io/$PROJECT_ID/${IMAGE}:${{ steps.vars.outputs.docker_tag }}"
           cat kustomization.yaml
