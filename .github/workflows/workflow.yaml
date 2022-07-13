@@ -14,7 +14,7 @@ env:
 
 jobs:
   job1:
-   uses: RaizadaHaroon/gcp-terraform/.github/workflows/actions/reuseable.yaml@main
+   uses: RaizadaHaroon/gcp-terraform/.github/workflows/actions/reuseable.yaml
    with:
       project_id: $PROJECT_ID
      # GOOGLE_CREDENTIALS: $GITHUB_RUN_NUMBER
