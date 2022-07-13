@@ -58,6 +58,9 @@ jobs:
   build-push:
       name: Build, Push and deploy app to gke
       runs-on: ubuntu-latest
+      defaults:
+       run:
+        shell: bash
 
       steps:
        - name: Checkout
