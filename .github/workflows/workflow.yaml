@@ -14,7 +14,7 @@ env:
 
 jobs:
   job1:
-   uses: ./.github/workflows/actions/reuseable.yaml
+   uses: ./.github/workflows/reuseable.yaml
    with:
       project_id: $PROJECT_ID
      # GOOGLE_CREDENTIALS: $GITHUB_RUN_NUMBER
