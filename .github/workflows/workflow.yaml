@@ -21,7 +21,6 @@ jobs:
    secrets:
       token: ${{ secrets.GOOGLE_CREDENTIALS }}
   job2:
-   needs: job1
    uses: ./.github/workflows/reuseableApp.yaml
    with:
       project_id: cr-lab-hraizada-2906225331
