@@ -24,11 +24,11 @@ jobs:
    needs: job1
    uses: ./.github/workflows/reuseableApp.yaml
    with:
-      project_id: ${PROJECT_ID}
-      image: ${IMAGE}
-      deploymentName: ${DEPLOYMENT_NAME}
-      GKE_CLUSTER: ${env.GKE_CLUSTER}
-      GKE_ZONE: ${env.GKE_ZONE}
+      project_id: cr-lab-hraizada-2906225331
+      image: top
+      deploymentName: hello-app
+      GKE_CLUSTER: learnk8s-cluster-prod 
+      GKE_ZONE: europe-west1
        
    secrets:
       token: ${{ secrets.GOOGLE_CREDENTIALS }}
