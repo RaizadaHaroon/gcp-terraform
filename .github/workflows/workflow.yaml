@@ -24,11 +24,11 @@ jobs:
    needs: job1
    uses: ./.github/workflows/reuseableApp.yaml
    with:
-      project_id: $PROJECT_ID
-      image: $IMAGE
-      deploymentName: $DEPLOYMENT_NAME
-      GKE_CLUSTER: $GKE_CLUSTER
-      GKE_ZONE: $GKE_ZONE
+      project_id: ${{env.PROJECT_ID}}
+      image: ${{env.IMAGE}}
+      deploymentName: ${{env.DEPLOYMENT_NAME}}
+      GKE_CLUSTER: ${{env.GKE_CLUSTER}}
+      GKE_ZONE: ${{env.GKE_ZONE}}
        
    secrets:
       token: ${{ secrets.GOOGLE_CREDENTIALS }}
