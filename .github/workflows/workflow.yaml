@@ -21,7 +21,7 @@ jobs:
   #  secrets:
   #     token: ${{ secrets.GOOGLE_CREDENTIALS }}
   job2:
-   uses: RaizadaHaroon/ReuseableWorkflows/.github/workflows/reuseableApp.yaml
+   uses: RaizadaHaroon/ReuseableWorkflows/.github/workflows/reuseableApp.yaml@main
    #needs: job1
    
    with:
