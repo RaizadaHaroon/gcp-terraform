@@ -17,7 +17,7 @@ jobs:
   job1:
    uses: ./.github/workflows/reuseable.yaml
    with:
-      project_id: $PROJECT_ID
+      project_id: cr-lab-hraizada-2906225331
    secrets:
       token: ${{ secrets.GOOGLE_CREDENTIALS }}
   job2:
@@ -61,9 +61,7 @@ jobs:
   #   - name: Terraform Format
   #     run: terraform fmt -check
 
-  #   # Generates an execution plan for Terraform
-  #   - name: Terraform Plan
-  #     run: terraform plan -var="project_id=cr-lab-hraizada-2906225331"
+  #   # Generates an execution plan for TerrafDproject_id=cr-lab-hraizada-2906225331"
   #     env:
   #       GOOGLE_CREDENTIALS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
