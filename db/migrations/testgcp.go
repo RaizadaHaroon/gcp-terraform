@@ -61,7 +61,7 @@ func insertNewVM() (string, error) {
 
 	if err2 == nil {
 		//log.Fatal("new one", c.Fields, c.Header().Values)
-		return "instance already exists.", nil
+		return "", fmt.Errorf("instance already exists.")
 	}
 	if err != nil {
 		//	log.Panic("error")
