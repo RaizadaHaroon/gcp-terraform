@@ -1,10 +1,8 @@
 name: 'Terraform CI'
 
+
 on:
-  push:
-    branches:
-    - main
-  pull_request:
+  workflow_dispatch:
 env:
   PROJECT_ID: cr-lab-hraizada-2906225331
   GKE_CLUSTER: learnk8s-cluster-prod   # Add your cluster name here.
@@ -14,26 +12,20 @@ env:
   CREDS: ${{ secrets.GOOGLE_CREDENTIALS }}
 
 jobs:
+  job1:
   # job1:
   #  uses: ./.github/workflows/reuseable.yaml
   #  with:
   #     project_id: cr-lab-hraizada-2906225331
   #  secrets:
   #     token: ${{ secrets.GOOGLE_CREDENTIALS }}
-  job2:
-   uses: RaizadaHaroon/ReuseableWorkflows/.github/workflows/reuseableApp.yaml@main
-   #needs: job1
+  
    
-   with:
-      project_id: cr-lab-hraizada-2906225331
-      image: top
-      deploymentName: hello-app
-      GKE_CLUSTER: learnk8s-cluster-prod 
-      GKE_ZONE: europe-west1
-       
-   secrets:
-      token: ${{ secrets.GOOGLE_CREDENTIALS }}
-     # GOOGLE_CREDENTIALS: $GITHUB_RUN_NUMBER
+   runs-on: ubuntu-latest
+   steps:
+      # Checkout repo
+       - name: Checkout
+         run: echo "hello"
   #   name: 'Terraform'
   #   runs-on: ubuntu-latest
 
