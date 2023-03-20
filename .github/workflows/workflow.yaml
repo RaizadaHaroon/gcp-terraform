@@ -22,13 +22,10 @@ jobs:
   
    
    runs-on: ubuntu-latest
-   outputs:
-      output1: ${{ steps.step1.outputs.test }}
+  
    steps:
       # Checkout repo
-       - name: Checkout
-         run: echo "version1='[\"1\",\"2\",\"3\"]'" >> $GITHUB_OUTPUT
-       - id: step1
+       - name: step1
          run: echo "test=hello" >> "$GITHUB_OUTPUT"
   #   name: 'Terraform'
   #   runs-on: ubuntu-latest
