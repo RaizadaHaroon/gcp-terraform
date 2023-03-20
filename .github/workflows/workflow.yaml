@@ -26,6 +26,8 @@ jobs:
       # Checkout repo
        - name: Checkout
          run: echo "version1='[\"1\",\"2\",\"3\"]'" >> $GITHUB_OUTPUT
+       - name: fetch output
+         run: echo $version1
   #   name: 'Terraform'
   #   runs-on: ubuntu-latest
 
