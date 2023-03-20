@@ -26,7 +26,7 @@ jobs:
    steps:
       # Checkout repo
        - name: step1
-         run: echo "test=hello" >> "$GITHUB_OUTPUT"
+         run: echo "test=hello" >> "$GITHUB_ENV"
   #   name: 'Terraform'
   #   runs-on: ubuntu-latest
 
